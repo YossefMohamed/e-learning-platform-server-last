@@ -60,10 +60,6 @@ export const createLesson = async (
     for (const key in req.files) {
       fs.unlink(req.files[key][0].path, (err) => {
         if (err) {
-          console.log("err");
-          console.log(err);
-          console.log("err");
-
           return next(err);
         }
         console.log(req.files[key][0].path + " was deleted");
