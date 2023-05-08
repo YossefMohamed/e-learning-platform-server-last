@@ -32,8 +32,52 @@ export const createQuestion = async (
     quiz.questions.push(createdQuestion);
     await quiz.save();
 
-    res.status(201).json(createdQuestion);
+    res.status(201).json({
+      statue: "ok",
+      data: createdQuestion,
+    });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getQuizByLesson = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { lesson } = req.params;
+    const quiz = await Quiz.find({
+      lesson,
+    });
+    if (!quiz) throw new NotFoundError();
+    res.status(200).json({
+      status: "ok",
+      data: lesson,
+    });
+  } catch (error) {
+    next(new NotFoundError());
+  }
+};
+
+export const getQuestionById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const questionId = req.params.id as string;
+
+    const question: IQuestion | null = await Question.findById(questionId);
+    if (!question) {
+      throw new NotFoundError();
+    }
+    res.status(200).json({
+      status: "ok",
+      data: question,
+    });
+  } catch (err) {
+    next(new NotFoundError());
   }
 };

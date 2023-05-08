@@ -9,7 +9,6 @@ export interface ILesson extends Document {
   assignment: string;
   description: string;
   extra: string;
-  quiz: string;
   unit: PopulatedDoc<IUnit>;
   course: PopulatedDoc<ICourse>;
 }
@@ -86,9 +85,7 @@ const LessonSchema: Schema<ILesson> = new mongoose.Schema<ILesson>(
     extra: {
       type: String,
     },
-    quiz: {
-      type: String,
-    },
+
     unit: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Unit",

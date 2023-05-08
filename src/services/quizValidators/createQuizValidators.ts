@@ -8,6 +8,5 @@ export const createQuestionValidators = [
   body("options.*.value")
     .isString()
     .withMessage("Option value must be a string"),
-  ,
   param("quizId").isMongoId().withMessage("Quiz ID is not valid"),
 ];

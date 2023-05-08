@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "../errors/not-found-error";
 import Lesson from "../models/lessonModel";
 import fs from "fs";
+import { Quiz } from "../models/QuizModel";
 interface MulterRequest extends Request {
   files: any;
 }
@@ -33,7 +34,7 @@ export const createLesson = async (
 ) => {
   try {
     const { unit, course } = req.params;
-    const { name, description, extra, quiz } = req.body;
+    const { name, description, extra } = req.body;
     if (!req.files.video || !req.files.file || !req.files.assignment)
       throw new Error("Please upload a least one resource");
 
@@ -46,11 +47,12 @@ export const createLesson = async (
       description,
       assignment: req.files.assignment && req.files.assignment[0].filename,
       extra,
-      quiz,
       unit,
       course,
     });
-
+    await Quiz.create({
+      lesson: lesson._id,
+    });
     res.status(200).json({
       status: "ok",
       data: lesson,
