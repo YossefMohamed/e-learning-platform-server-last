@@ -50,9 +50,10 @@ export const createLesson = async (
       unit,
       course,
     });
-    await Quiz.create({
+    const quiz = await Quiz.create({
       lesson: lesson._id,
     });
+    console.log(quiz);
     res.status(200).json({
       status: "ok",
       data: lesson,

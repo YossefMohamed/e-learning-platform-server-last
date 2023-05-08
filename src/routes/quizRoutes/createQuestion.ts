@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { createQuestion } from "../../controllers/QuizControllers";
 import { validateRequest } from "../../middlewares/validate-request";
-import { createQuestionValidators } from "../../services/quizValidators/createQuizValidators";
+import { createQuestionValidators } from "../../services/quizValidators/createQuestionValidators";
 
 const router = Router();
 
 router.post(
-  "/:quizId",
+  "/questions/:quizId",
   createQuestionValidators,
   validateRequest,
   createQuestion
