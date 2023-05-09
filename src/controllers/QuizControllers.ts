@@ -83,6 +83,30 @@ export const getQuestionById = async (
   }
 };
 
+export const checkQuestionAnswer = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { questionId } = req.params;
+
+    const { answer } = req.body;
+
+    const question = await Question.findById(questionId);
+    if (!question) {
+      throw new NotFoundError();
+    }
+    const check = question.options[answer].selected;
+    return res.status(200).json({
+      status: "ok",
+      data: check,
+    });
+  } catch (error) {
+    next(new NotFoundError());
+  }
+};
+
 export const createQuiz = async (
   req: Request,
   res: Response,
