@@ -94,7 +94,7 @@ export const checkQuestionAnswer = async (
     const { answer } = req.body;
 
     const question = await Question.findById(questionId);
-    if (!question) {
+    if (!question || question.options.length > answer) {
       throw new NotFoundError();
     }
     const check = question.options[answer].selected;
