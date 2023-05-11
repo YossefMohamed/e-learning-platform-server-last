@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IQuestion, IQuiz, Question, Quiz } from "../models/QuizModel";
 import { NotFoundError } from "../errors/not-found-error";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
+import Score from "../models/scoreModal";
 
 // Create a new question
 export const createQuestion = async (
@@ -98,9 +99,15 @@ export const checkQuestionAnswer = async (
       throw new NotFoundError();
     }
     const check = question.options[answer].selected;
+
+    const score = await Score.create({
+      student: req.user._id,
+      question,
+      check,
+    });
     return res.status(200).json({
       status: "ok",
-      data: check,
+      data: score,
     });
   } catch (error) {
     next(new NotFoundError());
