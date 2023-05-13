@@ -3,6 +3,6 @@ import { getQuestionById } from "../../controllers/QuizControllers";
 
 const router = Router();
 
-router.get("/:id", getQuestionById);
+router.get("/questions/:id", getQuestionById);
 
 export { router as getQuestionByIdRouter };

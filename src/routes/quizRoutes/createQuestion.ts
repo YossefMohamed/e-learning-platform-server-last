@@ -7,6 +7,7 @@ const router = Router();
 
 router.post(
   "/questions/:quizId",
+
   createQuestionValidators,
   validateRequest,
   createQuestion

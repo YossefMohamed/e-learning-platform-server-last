@@ -1,7 +1,12 @@
 import { body, param } from "express-validator";
 
 export const createQuestionValidators = [
-  body("text").isString().withMessage("Question text must be a string"),
+  body("text")
+    .not()
+    .isEmpty()
+    .withMessage("Question title cant be empty")
+    .isString()
+    .withMessage("Question text must be a string"),
   body("options")
     .isArray({ min: 2, max: 6 })
     .withMessage("Question must have at least 2 and at most 6 options"),

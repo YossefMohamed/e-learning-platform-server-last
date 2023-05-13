@@ -5,7 +5,7 @@ import { checkQuestionAnswerValidators } from "../../services/quizValidators/che
 
 const router = Router();
 
-router.get(
+router.post(
   "/questions/:questionId",
   checkQuestionAnswerValidators,
   validateRequest,
