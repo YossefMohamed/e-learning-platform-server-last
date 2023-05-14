@@ -52,8 +52,7 @@ export const getQuizByLesson = async (
     const { lesson } = req.params;
     const quiz = await Quiz.find({
       lesson,
-    }).populate("questions._id");
-    if (!quiz) throw new NotFoundError();
+    });
     res.status(200).json({
       status: "ok",
       data: quiz,
