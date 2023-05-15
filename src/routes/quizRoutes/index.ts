@@ -3,7 +3,7 @@ import { createQuestionRouter } from "./createQuestion";
 import { getQuestionByIdRouter } from "./getQuestionById";
 import { getQuizByLessonRouter } from "./getQuizByLesson";
 import { createQuizRouter } from "./createQuiz";
-import { getQuizByIdRouter } from "./getquizById";
+import { getQuizByIdRouter } from "./getQuizById";
 
 const QuizRouter = Router();
 
