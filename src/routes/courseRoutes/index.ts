@@ -9,10 +9,11 @@ import { getCurrentUserCoursesRouter } from "./getCurrentUserCourse";
 
 const courseRouter = Router();
 courseRouter.use(getCoursesRouter);
-courseRouter.use(getCoursesByYearRouter);
 
 courseRouter.use(protect);
 courseRouter.use(getCurrentUserCoursesRouter);
+courseRouter.use(getCoursesByYearRouter);
+
 courseRouter.use(createCourseRouter);
 courseRouter.use(deleteCourseRouter);
 

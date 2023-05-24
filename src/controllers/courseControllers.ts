@@ -34,8 +34,10 @@ export const editCourse = async (
   try {
     if (!req.user.isAdmin) throw new Error();
     const { id } = req.params;
+    console.log(req.body);
     const { name, year } = req.body;
     const course = await Course.findById(id);
+    console.log(name);
     course.name = name || course.name;
     course.year = year || course.year;
     await course.save();
@@ -81,7 +83,7 @@ export const getCoursesByYear = async (
       data: courses,
     });
   } catch (error) {
-    next(new NotFoundError("Server is not found"));
+    next(error);
   }
 };
 
@@ -108,8 +110,10 @@ export const getCurrentUserCourses = async (
   next: NextFunction
 ) => {
   try {
+    console.log("course");
+
     const { course } = req.user;
-    return req.user
+    console.log(course);
     let currentCourse: any;
     if (req.user.isAdmin) {
       currentCourse = await Course.find();
@@ -122,7 +126,6 @@ export const getCurrentUserCourses = async (
     return res.status(200).json({
       status: "ok",
       data: currentCourse,
-user : req.user
     });
   } catch (error) {
     next(error);
