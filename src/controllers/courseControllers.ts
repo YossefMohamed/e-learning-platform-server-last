@@ -115,7 +115,7 @@ export const getCurrentUserCourses = async (
     } else {
       currentCourse = await Course.find({ _id: course });
     }
-    if (currentCourse) {
+    if (!currentCourse) {
       throw new NotFoundError("Course is not found");
     }
     return res.status(200).json({
