@@ -109,7 +109,7 @@ export const getCurrentUserCourses = async (
 ) => {
   try {
     const { course } = req.user;
-  
+    return req.user
     let currentCourse: any;
     if (req.user.isAdmin) {
       currentCourse = await Course.find();
