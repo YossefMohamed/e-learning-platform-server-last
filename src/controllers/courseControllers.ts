@@ -101,3 +101,23 @@ export const deleteCourse = async (
     next(error);
   }
 };
+
+export const getCurrentUserCourses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { course } = req.user;
+    const currentCourse = await Course.findById(course);
+    if (currentCourse) {
+      throw new NotFoundError("Course is not found");
+    }
+    return res.status(200).json({
+      status: "ok",
+      data: currentCourse,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
