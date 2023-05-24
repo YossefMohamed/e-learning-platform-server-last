@@ -109,7 +109,12 @@ export const getCurrentUserCourses = async (
 ) => {
   try {
     const { course } = req.user;
-    const currentCourse = await Course.findById(course);
+    let currentCourse: any;
+    if (req.user.isAdmin) {
+      currentCourse = await Course.find();
+    } else {
+      currentCourse = await Course.find({ _id: course });
+    }
     if (currentCourse) {
       throw new NotFoundError("Course is not found");
     }
