@@ -44,7 +44,7 @@ export const editCourse = async (
       data: course,
     });
   } catch (error) {
-    next(new NotFoundError("Year is not found"));
+    next(error);
   }
 };
 
@@ -109,6 +109,7 @@ export const getCurrentUserCourses = async (
 ) => {
   try {
     const { course } = req.user;
+  
     let currentCourse: any;
     if (req.user.isAdmin) {
       currentCourse = await Course.find();
@@ -121,6 +122,7 @@ export const getCurrentUserCourses = async (
     return res.status(200).json({
       status: "ok",
       data: currentCourse,
+user : req.user
     });
   } catch (error) {
     next(error);
