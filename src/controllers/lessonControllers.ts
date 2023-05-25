@@ -142,7 +142,10 @@ export const getLessonsWithUnitsByCourse = async (
         if (lesson.unit._id === unit._id) {
           lessonsWithUnits[idx] = {
             ...lessonsWithUnits[idx],
-            lessons: [...lessonsWithUnits[idx].lessons, lesson],
+            lessons: [
+              ...lessonsWithUnits[idx].lessons,
+              { _id: lesson._id, name: lesson.name },
+            ],
           };
         }
       });
