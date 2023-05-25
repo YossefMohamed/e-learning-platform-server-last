@@ -3,6 +3,7 @@ import { NotFoundError } from "../errors/not-found-error";
 import Lesson from "../models/lessonModel";
 import fs from "fs";
 import { Quiz } from "../models/QuizModel";
+
 interface MulterRequest extends Request {
   files: any;
 }
@@ -110,5 +111,48 @@ export const getLesson = async (
     });
   } catch (error) {
     next(new NotFoundError());
+  }
+};
+
+export const getLessonsWithUnitsByCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { course } = req.params;
+    console.log(course);
+    const lessons = await Lesson.find({
+      course,
+    }).populate("unit");
+    let lessonsWithUnits = [];
+    lessons.map((lesson) => {
+      if (lessonsWithUnits.map(({ _id }) => _id === lesson.unit._id).length) {
+        return;
+      }
+      lessonsWithUnits.push({
+        _id: lesson.unit._id,
+        name: lesson.unit.name,
+        lessons: [],
+      });
+    });
+
+    lessonsWithUnits.map((unit, idx) => {
+      lessons.map((lesson) => {
+        if (lesson.unit._id === unit._id) {
+          lessonsWithUnits[idx] = {
+            ...lessonsWithUnits[idx],
+            lessons: [...lessonsWithUnits[idx].lessons, lesson],
+          };
+        }
+      });
+    });
+
+    return res.status(200).json({
+      status: "ok",
+      data: lessonsWithUnits,
+    });
+  } catch (error) {
+    next(error);
   }
 };

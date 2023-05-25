@@ -57,13 +57,13 @@ export const getCourses = async (
 ) => {
   try {
     const courses = await Course.find().populate("year");
-
+    console.log(courses);
     return res.status(200).json({
       status: "ok",
       data: courses,
     });
   } catch (error) {
-    next(new NotFoundError("Server is not found"));
+    next(error);
   }
 };
 
