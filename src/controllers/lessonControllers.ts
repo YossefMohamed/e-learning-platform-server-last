@@ -148,7 +148,7 @@ export const getLessonsWithUnitsByCourse = async (
             ...lessonsWithUnits[idx],
             lessons: [
               ...lessonsWithUnits[idx].lessons,
-              { ...lesson , unit:lesson.unit._id },
+              lesson,
             ],
           };
         }
