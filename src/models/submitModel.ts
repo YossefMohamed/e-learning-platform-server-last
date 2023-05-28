@@ -21,7 +21,7 @@ const SubmitSchema: Schema<ISubmit> = new mongoose.Schema<ISubmit>(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "Unit",
+      ref: "User",
     },
     reviewed: {
       type: Boolean,
