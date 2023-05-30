@@ -3,6 +3,7 @@ import { NotFoundError } from "../errors/not-found-error";
 import fs from "fs";
 import Submit, { ISubmit } from "../models/submitModel";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
+import Lesson from "../models/lessonModel";
 
 interface MulterRequest extends Request {
   files: any;
@@ -48,13 +49,26 @@ export const getUserSubmitByLesson = async (
 ) => {
   try {
     const { lesson } = req.params;
+
     const submit = await Submit.findOne({
       lesson,
       user: req.user._id,
-    }).populate("user");
-    res.status(200).json({
+    }).populate("user lesson");
+    if (submit) {
+      return res.status(200).json({
+        status: "ok",
+        data: submit,
+      });
+    }
+    const lessonData = await Lesson.findById(lesson);
+    return res.status(200).json({
       status: "ok",
-      data: submit,
+      data: {
+        lesson: {
+          name: lessonData.name,
+          _id: lessonData._id,
+        },
+      },
     });
   } catch (error) {
     next(new NotFoundError("Submit is not found"));

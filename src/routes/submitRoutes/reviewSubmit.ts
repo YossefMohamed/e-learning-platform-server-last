@@ -8,7 +8,6 @@ const router = Router();
 router.get(
   "/reviews/:lesson",
   getSubmitValidators,
-
   validateRequest,
   ReviewSubmit
 );
