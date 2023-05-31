@@ -72,10 +72,13 @@ export const ReviewSubmit = async (
   next: NextFunction
 ) => {
   try {
+    console.log(req.user);
+
     if (!req.user.isAdmin)
       throw new NotAuthorizedError("You are not authorized");
     const { id } = req.params;
     const { mark, refMark } = req.body;
+
     const submit: ISubmit = await Submit.findById(id);
     if (!submit) throw new NotFoundError("Submit is not found");
     submit.reviewed = true;

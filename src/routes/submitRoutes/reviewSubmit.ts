@@ -5,7 +5,7 @@ import { reviewSubmitValidators } from "../../services/submitsValidators/reviewS
 
 const router = Router();
 
-router.get(
+router.post(
   "/reviews/:id",
   reviewSubmitValidators,
   validateRequest,
