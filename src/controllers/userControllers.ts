@@ -63,7 +63,7 @@ export const editUser = async (
 ) => {
   try {
     const { id } = req.params;
-    if (!req.user.isAdmin || req.user.id !== id)
+    if (!req.user.isAdmin || (!req.user.isAdmin && req.user._id === id))
       return next(new NotAuthorizedError());
     const name = req.body.name ? req.body.name : req.user.name;
     const status = req.body.status ? req.body.status : req.user.status;

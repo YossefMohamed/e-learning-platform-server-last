@@ -42,50 +42,21 @@ export const createSubmit = async (
   }
 };
 
-export const getUserSubmitByLesson = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { lesson } = req.params;
-
-    const submit = await Submit.findOne({
-      lesson,
-      user: req.user._id,
-    }).populate("user lesson");
-    if (submit) {
-      return res.status(200).json({
-        status: "ok",
-        data: submit,
-      });
-    }
-    const lessonData = await Lesson.findById(lesson);
-    return res.status(200).json({
-      status: "ok",
-      data: {
-        lesson: {
-          name: lessonData.name,
-          _id: lessonData._id,
-        },
-      },
-    });
-  } catch (error) {
-    next(new NotFoundError("Submit is not found"));
-  }
-};
-
 export const getSubmitsByLesson = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    if (!req.user.isAdmin)
-      throw new NotAuthorizedError("You are not authorized");
-
     const { lesson } = req.params;
-    const submit = await Submit.find({ lesson }).populate("user");
+    let submit: ISubmit[];
+    if (req.user.isAdmin) {
+      submit = await Submit.find({ lesson }).populate("user lesson");
+    } else {
+      submit = await Submit.find({ lesson, user: req.user._id }).populate(
+        "user lesson"
+      );
+    }
     res.status(200).json({
       status: "ok",
       data: submit,
@@ -104,11 +75,12 @@ export const ReviewSubmit = async (
     if (!req.user.isAdmin)
       throw new NotAuthorizedError("You are not authorized");
     const { id } = req.params;
-    const { mark } = req.body;
+    const { mark, refMark } = req.body;
     const submit: ISubmit = await Submit.findById(id);
     if (!submit) throw new NotFoundError("Submit is not found");
     submit.reviewed = true;
     submit.mark = mark;
+    submit.refMark = refMark;
     res.status(200).json({
       status: "ok",
       data: submit,

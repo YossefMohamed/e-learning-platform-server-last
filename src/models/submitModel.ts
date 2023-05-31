@@ -8,6 +8,7 @@ export interface ISubmit extends Document {
   reviewed: boolean;
   mark: number;
   file: string;
+  refMark: number;
 }
 
 const SubmitSchema: Schema<ISubmit> = new mongoose.Schema<ISubmit>(
@@ -28,6 +29,10 @@ const SubmitSchema: Schema<ISubmit> = new mongoose.Schema<ISubmit>(
       default: false,
     },
     mark: {
+      type: Number,
+      default: 0,
+    },
+    refMark: {
       type: Number,
       default: 0,
     },
