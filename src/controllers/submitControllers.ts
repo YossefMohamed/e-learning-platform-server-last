@@ -84,6 +84,7 @@ export const ReviewSubmit = async (
     submit.reviewed = true;
     submit.mark = mark;
     submit.refMark = refMark;
+    await submit.save();
     res.status(200).json({
       status: "ok",
       data: submit,
