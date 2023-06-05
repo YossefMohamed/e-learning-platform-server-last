@@ -1,10 +1,12 @@
 import mongoose, { Schema, Document, PopulatedDoc } from "mongoose";
 
 import { ILesson } from "./lessonModel";
+import { IUser } from "./userModel";
 
 export interface IQuiz extends Document {
   questions: Array<IQuestion>;
   lesson: PopulatedDoc<ILesson>;
+  takenBy: [PopulatedDoc<IUser>];
 }
 
 export interface IQuestion extends Document {
@@ -62,6 +64,13 @@ const QuizSchema: Schema<IQuiz> = new mongoose.Schema<IQuiz>(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Question",
+      },
+    ],
+    takenBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
       },
     ],
   },

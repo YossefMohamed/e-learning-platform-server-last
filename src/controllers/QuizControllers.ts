@@ -69,8 +69,12 @@ export const getQuizById = async (
 ) => {
   try {
     const { id } = req.params;
-    const quiz = await Quiz.findById(id);
-    console.log(quiz, id);
+    const quiz: IQuiz = await Quiz.findById(id);
+
+    if (!quiz.takenBy.includes(req.user._id)) {
+      quiz.takenBy.push(req.user._id);
+    }
+
     if (!quiz) throw new NotFoundError();
     res.status(200).json({
       status: "ok",
@@ -149,5 +153,36 @@ export const createQuiz = async (
     });
   } catch (error) {
     next(new NotAuthorizedError());
+  }
+};
+
+export const editQuestion = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { text, options } = req.body;
+    const { questionId } = req.params;
+
+    const question = await Question.findById(questionId);
+    if (!question) throw new NotFoundError();
+    question.text = text;
+    question.options = options.map((o: any) => ({
+      value: o.value,
+      selected: o.selected,
+    }));
+
+    // Save new question document to database
+    await question.save();
+
+    // Add new question to quiz document
+
+    res.status(200).json({
+      statue: "ok",
+      data: question,
+    });
+  } catch (error) {
+    next(error);
   }
 };
