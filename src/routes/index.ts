@@ -6,9 +6,11 @@ import { yearRouter } from "./yearRoutes";
 import { unitRouter } from "./unitRoutes";
 import { lessonRouter } from "./lessonRoutes";
 import { QuizRouter } from "./quizRoutes";
+import { submitRouter } from "./submitRoutes";
 
 const indexRouter = Router();
 
+indexRouter.use("/submits", submitRouter);
 indexRouter.use("/users", userRouter);
 indexRouter.use("/years", yearRouter);
 indexRouter.use("/courses", courseRouter);

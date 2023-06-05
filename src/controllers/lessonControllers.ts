@@ -127,7 +127,11 @@ export const getLessonsWithUnitsByCourse = async (
     }).populate("unit");
     let lessonsWithUnits = [];
     lessons.map((lesson) => {
-      if (lessonsWithUnits.map(({ _id }) => _id === lesson.unit._id).length) {
+      if (
+        lessonsWithUnits
+          .map(({ _id }) => _id === lesson.unit._id)
+          .includes(true)
+      ) {
         return;
       }
       lessonsWithUnits.push({
@@ -144,7 +148,7 @@ export const getLessonsWithUnitsByCourse = async (
             ...lessonsWithUnits[idx],
             lessons: [
               ...lessonsWithUnits[idx].lessons,
-              { _id: lesson._id, name: lesson.name },
+              lesson,
             ],
           };
         }

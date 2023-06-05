@@ -62,5 +62,7 @@ function checkFileType(
     } else {
       cb(null, false); // else fails
     }
+  } else {
+    cb(null, false);
   }
 }
