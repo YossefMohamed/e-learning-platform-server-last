@@ -114,24 +114,27 @@ export const checkQuestionAnswer = async (
   try {
     const { questionId } = req.params;
 
-    const { answer } = req.body;
-
+    const { index: answer } = req.body;
+    console.log(req.body);
     const question = await Question.findById(questionId);
-    if (!question || question.options.length > answer) {
+    console.log(question.options.length - 1 < answer);
+
+    if (!question || question.options.length - 1 < answer) {
       throw new NotFoundError();
     }
     const check = question.options[answer].selected;
 
     const score = await Score.create({
       student: req.user._id,
-      question,
-      check,
+      question: question._id,
+      score: check,
     });
     return res.status(200).json({
       status: "ok",
       data: score,
     });
   } catch (error) {
+    console.log(error.message);
     next(new NotFoundError());
   }
 };

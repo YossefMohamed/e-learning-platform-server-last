@@ -6,10 +6,10 @@ import { checkQuestionAnswerValidators } from "../../services/quizValidators/che
 const router = Router();
 
 router.post(
-  "/questions/:questionId",
+  "/questions/check/:questionId",
   checkQuestionAnswerValidators,
   validateRequest,
   checkQuestionAnswer
 );
 
-export { router as createQuestionRouter };
+export { router as checkQuestionAnswerRouter };

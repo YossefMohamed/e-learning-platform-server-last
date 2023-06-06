@@ -6,6 +6,7 @@ import { createQuizRouter } from "./createQuiz";
 import { getQuizByIdRouter } from "./getQuizById";
 import { editQuestionRouter } from "./editQuestion";
 import { protect } from "../../middlewares/auth";
+import { checkQuestionAnswerRouter } from "./checkQuestionAnswer";
 
 const QuizRouter = Router();
 
@@ -16,5 +17,6 @@ QuizRouter.use(getQuizByLessonRouter);
 QuizRouter.use(createQuizRouter);
 QuizRouter.use(getQuizByIdRouter);
 QuizRouter.use(editQuestionRouter);
+QuizRouter.use(checkQuestionAnswerRouter);
 
 export { QuizRouter };
