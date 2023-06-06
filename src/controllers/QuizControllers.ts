@@ -69,8 +69,12 @@ export const getQuizById = async (
 ) => {
   try {
     const { id } = req.params;
-    const quiz: IQuiz = await Quiz.findById(id);
-
+    const quiz: IQuiz = await Quiz.findById(id).populate({
+      path: "lesson",
+      populate: {
+        path: "course",
+      },
+    });
     if (!quiz.takenBy.includes(req.user._id)) {
       quiz.takenBy.push(req.user._id);
     }
@@ -115,9 +119,7 @@ export const checkQuestionAnswer = async (
     const { questionId } = req.params;
 
     const { index: answer } = req.body;
-    console.log(req.body);
     const question = await Question.findById(questionId);
-    console.log(question.options.length - 1 < answer);
 
     if (!question || question.options.length - 1 < answer) {
       throw new NotFoundError();
@@ -134,7 +136,6 @@ export const checkQuestionAnswer = async (
       data: score,
     });
   } catch (error) {
-    console.log(error.message);
     next(new NotFoundError());
   }
 };
