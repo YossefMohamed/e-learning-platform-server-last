@@ -1,23 +1,22 @@
 import mongoose, { Schema, Document, PopulatedDoc } from "mongoose";
-import { ICourse } from "./courseModel";
-import { IQuestion } from "./QuizModel";
+import { IQuiz } from "./QuizModel";
 import { IUser } from "./userModel";
 
 export interface IScore extends Document {
-  score: boolean;
-  question: PopulatedDoc<IQuestion>;
+  score: number;
+  quiz: PopulatedDoc<IQuiz>;
   student: PopulatedDoc<IUser>;
 }
 
 const ScoreSchema: Schema<IScore> = new mongoose.Schema<IScore>({
   score: {
-    type: Boolean,
+    type: Number,
     required: true,
   },
 
-  question: {
+  quiz: {
     type: mongoose.Types.ObjectId,
-    ref: "Question",
+    ref: "Quiz",
     required: true,
   },
 

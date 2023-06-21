@@ -28,9 +28,7 @@ export const createQuestion = async (
     // Add new question to quiz document
     const quizId = req.params.quizId;
     const quiz = await Quiz.findById(quizId);
-    if (!quiz) {
-      throw new NotFoundError();
-    }
+
     quiz.questions.push(createdQuestion);
     await quiz.save();
 
@@ -39,6 +37,7 @@ export const createQuestion = async (
       data: createdQuestion,
     });
   } catch (error) {
+    console.log(error.message);
     next(error);
   }
 };
@@ -69,17 +68,18 @@ export const getQuizById = async (
 ) => {
   try {
     const { id } = req.params;
-    const quiz: IQuiz = await Quiz.findById(id).populate({
+    const score = await Score.findOne({
+      quiz: id,
+      student: req.user._id,
+    });
+    const quiz: any = await Quiz.findById(id).populate({
       path: "lesson",
       populate: {
         path: "course",
       },
     });
-    if (!quiz.takenBy.includes(req.user._id)) {
-      quiz.takenBy.push(req.user._id);
-    }
-
     if (!quiz) throw new NotFoundError();
+
     res.status(200).json({
       status: "ok",
       data: quiz,
@@ -101,6 +101,10 @@ export const getQuestionById = async (
     if (!question) {
       throw new NotFoundError();
     }
+    question.options = question.options.map((o) => {
+      o.selected = false;
+      return o;
+    });
     res.status(200).json({
       status: "ok",
       data: question,
@@ -126,14 +130,13 @@ export const checkQuestionAnswer = async (
     }
     const check = question.options[answer].selected;
 
-    const score = await Score.create({
-      student: req.user._id,
-      question: question._id,
-      score: check,
-    });
     return res.status(200).json({
       status: "ok",
-      data: score,
+      data: {
+        student: req.user._id,
+        question: question._id,
+        score: check,
+      },
     });
   } catch (error) {
     next(new NotFoundError());
@@ -185,6 +188,34 @@ export const editQuestion = async (
     res.status(200).json({
       statue: "ok",
       data: question,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addUserScore = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { score } = req.body;
+    const { quizId } = req.params;
+
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) throw new NotFoundError();
+
+    const userScore = await Score.create({
+      student: req.user._id,
+      quiz: quiz._id,
+      score,
+    });
+    quiz.takenBy.push({ user: req.user._id, score: userScore.score });
+    await quiz.save();
+    res.status(200).json({
+      statue: "ok",
+      data: userScore,
     });
   } catch (error) {
     next(error);
