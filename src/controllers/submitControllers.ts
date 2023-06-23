@@ -72,8 +72,6 @@ export const ReviewSubmit = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.user);
-
     if (!req.user.isAdmin)
       throw new NotAuthorizedError("You are not authorized");
     const { id } = req.params;

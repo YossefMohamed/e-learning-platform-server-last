@@ -101,10 +101,8 @@ export const getLesson = async (
 ) => {
   try {
     const { id } = req.params;
-    console.log(id);
 
-    const lesson = await Lesson.findById(id);
-    console.log(lesson);
+    const lesson = await Lesson.findById(id).populate("course");
     return res.status(200).json({
       status: "ok",
       data: lesson,
@@ -146,10 +144,7 @@ export const getLessonsWithUnitsByCourse = async (
         if (lesson.unit._id === unit._id) {
           lessonsWithUnits[idx] = {
             ...lessonsWithUnits[idx],
-            lessons: [
-              ...lessonsWithUnits[idx].lessons,
-              lesson,
-            ],
+            lessons: [...lessonsWithUnits[idx].lessons, lesson],
           };
         }
       });

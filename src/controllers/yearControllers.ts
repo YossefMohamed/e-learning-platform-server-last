@@ -56,7 +56,13 @@ export const getYears = async (
   next: NextFunction
 ) => {
   try {
-    const years = await Year.find();
+    const years = await Year.find(
+      req.user.isAdmin
+        ? {}
+        : {
+            _id: req.user.year,
+          }
+    );
     return res.status(200).json({
       status: "ok",
       data: years,

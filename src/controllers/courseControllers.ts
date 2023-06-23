@@ -57,7 +57,6 @@ export const getCourses = async (
 ) => {
   try {
     const courses = await Course.find().populate("year");
-    console.log(courses);
     return res.status(200).json({
       status: "ok",
       data: courses,
@@ -74,9 +73,17 @@ export const getCoursesByYear = async (
 ) => {
   try {
     const { year } = req.params;
-    const courses = await Course.find({
-      year: year,
-    }).populate("year");
+
+    const courses = await Course.find(
+      req.user.isAdmin
+        ? {
+            year: year,
+          }
+        : {
+            year: year,
+            _id: req.user.course,
+          }
+    ).populate("year");
 
     return res.status(200).json({
       status: "ok",
