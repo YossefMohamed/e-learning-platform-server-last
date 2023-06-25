@@ -8,6 +8,7 @@ import { editQuestionRouter } from "./editQuestion";
 import { protect } from "../../middlewares/auth";
 import { checkQuestionAnswerRouter } from "./checkQuestionAnswer";
 import { addScoreRouter } from "./addUserScoreToQuiz";
+import { deleteQuizByIdRouter } from "./deleteQuizById";
 
 const QuizRouter = Router();
 
@@ -20,5 +21,6 @@ QuizRouter.use(getQuizByIdRouter);
 QuizRouter.use(editQuestionRouter);
 QuizRouter.use(checkQuestionAnswerRouter);
 QuizRouter.use(addScoreRouter);
+QuizRouter.use(deleteQuizByIdRouter);
 
 export { QuizRouter };

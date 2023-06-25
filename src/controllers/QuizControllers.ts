@@ -49,12 +49,20 @@ export const getQuizByLesson = async (
 ) => {
   try {
     const { lesson } = req.params;
-    const quiz = await Quiz.find({
-      lesson,
-    });
+    let quizzes = await Quiz.find(
+      !req.user.isAdmin
+        ? {
+            lesson,
+            "questions.0": { $exists: true },
+          }
+        : {
+            lesson,
+          }
+    );
+    console.log(quizzes);
     res.status(200).json({
       status: "ok",
-      data: quiz,
+      data: quizzes,
     });
   } catch (error) {
     next(new NotFoundError());
@@ -204,7 +212,8 @@ export const addUserScore = async (
     const { quizId } = req.params;
 
     const quiz = await Quiz.findById(quizId);
-    if (!quiz) throw new NotFoundError();
+    if (!quiz || score < 0 || score >= quiz.questions)
+      throw new NotFoundError();
 
     const userScore = await Score.create({
       student: req.user._id,
@@ -216,6 +225,26 @@ export const addUserScore = async (
     res.status(200).json({
       statue: "ok",
       data: userScore,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteQuizById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    if (!req.user.isAdmin) throw new NotAuthorizedError();
+    const quiz = await Quiz.findById(id);
+    if (!quiz) throw new NotFoundError();
+    await quiz.deleteOne();
+    res.status(200).json({
+      status: "ok",
+      data: quiz,
     });
   } catch (error) {
     next(error);
