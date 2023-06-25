@@ -3,17 +3,18 @@ import { app } from "./app";
 import { connectDB } from "./db";
 import swaggerDocs from "./services/swagger";
 
+import http from "http";
+
+const server = http.createServer(app);
+
 const port = process.env.PORT! || 3000;
 console.log(process.env.dbURI);
 
-const server = app.listen(port, () => {
-  console.log(`Express is listening at http://localhost:${port}`);
-  connectDB();
-
-  swaggerDocs(app, Number(port));
+let io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
 });
-
-let io = require("socket.io")(server);
 let onlineUser: ObjectId[] = [];
 
 io.on("connection", (socket: any) => {
@@ -30,7 +31,10 @@ io.on("connection", (socket: any) => {
 
   socket.on("login", (userId: ObjectId) => {
     onlineUser.push(userId);
+    console.log("onlineUser");
     console.log(onlineUser);
+    console.log(userId);
+    console.log("onlineUser");
 
     socket.emit("online", onlineUser);
   });
@@ -42,4 +46,11 @@ io.on("connection", (socket: any) => {
 
     socket.emit("online", onlineUser);
   });
+});
+
+server.listen(port, () => {
+  console.log(`Express is listening at http://localhost:${port}`);
+  connectDB();
+
+  swaggerDocs(app, Number(port));
 });
