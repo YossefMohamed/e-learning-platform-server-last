@@ -59,7 +59,6 @@ export const getQuizByLesson = async (
             lesson,
           }
     );
-    console.log(quizzes);
     res.status(200).json({
       status: "ok",
       data: quizzes,
