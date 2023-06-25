@@ -62,7 +62,10 @@ export const getYears = async (
         : {
             _id: req.user.year,
           }
-    );
+    ).populate({
+      path: "courses",
+      populate: "students lessons",
+    });
     return res.status(200).json({
       status: "ok",
       data: years,

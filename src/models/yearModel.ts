@@ -63,7 +63,6 @@ const yearSchema: Schema<IYear> = new mongoose.Schema<IYear>(
   },
   {
     timestamps: true,
-
     toJSON: {
       transform(doc, ret) {
         delete ret.password;
@@ -73,6 +72,12 @@ const yearSchema: Schema<IYear> = new mongoose.Schema<IYear>(
     },
   }
 );
+
+yearSchema.virtual("courses", {
+  ref: "Course",
+  localField: "_id",
+  foreignField: "year",
+});
 
 const Year = mongoose.model<IYear>("Year", yearSchema);
 export default Year;

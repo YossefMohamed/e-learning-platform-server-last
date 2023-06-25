@@ -8,7 +8,6 @@ import { Router } from "express";
 import { errorHandler } from "./middlewares/error-handler";
 import cors from "cors";
 
-import { IUser } from "./models/userModel";
 import { NotFoundError } from "./errors/not-found-error";
 const app = express();
 const corsOptions = { credentials: true, origin: "*" };

@@ -82,5 +82,17 @@ const courseSchema: Schema<ICourse> = new mongoose.Schema<ICourse>(
   }
 );
 
+courseSchema.virtual("students", {
+  ref: "User",
+  localField: "_id",
+  foreignField: "course",
+});
+
+courseSchema.virtual("lessons", {
+  ref: "Lesson",
+  localField: "_id",
+  foreignField: "course",
+});
+
 const Course = mongoose.model<ICourse>("Course", courseSchema);
 export default Course;
