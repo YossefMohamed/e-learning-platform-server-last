@@ -5,15 +5,7 @@ import mongoose from "mongoose";
 
 export const addChat = async (req: Request, res, next) => {
   try {
-    if (!req.body.users) {
-      return res.status(400);
-    }
-
     const users = req.body.users;
-
-    if (users.length == 0) {
-      return res.status(400);
-    }
 
     users.push(req.user);
 
@@ -27,11 +19,9 @@ export const addChat = async (req: Request, res, next) => {
         users: users,
       });
     }
-
     if (!chat) {
       chat = await Chat.create(chatData);
     }
-
     res.status(200).json({
       status: "ok",
       data: chat,
@@ -64,6 +54,7 @@ export const getChat = async (req: Request, res, next) => {
 };
 
 export const getChats = async (req: Request, res, next) => {
+  console.log(req.user);
   const chats = await Chat.find({
     users: { $elemMatch: { $eq: req.user._id } },
   })

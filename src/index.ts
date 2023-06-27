@@ -18,7 +18,9 @@ let io = require("socket.io")(server, {
 let onlineUser: ObjectId[] = [];
 
 io.on("connection", (socket: any) => {
-  socket.on("setup", (currentUser: any) => socket.join(currentUser));
+  socket.on("setup", (currentUser: any) => {
+    socket.join(currentUser);
+  });
   socket.on("join room", (room: any) => socket.join(room));
   socket.on("typing", (room: any) => socket.in(room).emit("typing"));
   socket.on("stop typing", (room: any) => socket.in(room).emit("stop typing"));
