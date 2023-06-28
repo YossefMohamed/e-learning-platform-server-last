@@ -37,16 +37,11 @@ export const getChat = async (req: Request, res, next) => {
       status: "failed",
       message: "Not Found",
     });
-  if (!req.user) return res.redirect("/");
   const chat = await Chat.findOne({
     _id: req.params.id,
     users: { $in: [req.user?._id] },
   }).populate("users");
-  if (!chat)
-    return res.status(404).json({
-      status: "failed",
-      message: "Chat not found!",
-    });
+  if (!chat) next(new NotFoundError("Chat is not found"));
   res.status(200).json({
     status: "ok",
     data: chat,
