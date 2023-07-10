@@ -28,8 +28,8 @@ io.on("connection", (socket: any) => {
     socket.in(room).emit("message received")
   );
   socket.on("new message", (message: any) => {
-
-    socket.in(message.chat._id).emit("new message", message);
+    console.log(message);
+    // socket.in(message.chat._id).emit("new message", message);
   });
 
   socket.on("login", (userId: ObjectId) => {

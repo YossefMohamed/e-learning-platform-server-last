@@ -15,7 +15,7 @@ const messageSchema: mongoose.Schema<IMessage> = new mongoose.Schema<IMessage>(
   {
     sender: { type: Schema.Types.ObjectId, ref: "User" },
     content: { type: String, trim: true },
-    chat: { type: Schema.Types.ObjectId, ref: "Chat" },
+    chat: { type: Schema.Types.ObjectId, ref: "Chat", required: true },
     readBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }

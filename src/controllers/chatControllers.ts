@@ -7,11 +7,13 @@ export const addChat = async (req: Request, res, next) => {
   try {
     const users = req.body.users;
 
-    users.push(req.user);
+    users.push(req.user._id);
 
     const chatData = {
       users: users,
     };
+
+    console.log("data ", chatData);
 
     let chat: IChat | null = null;
     if (users.length === 2) {
@@ -20,7 +22,9 @@ export const addChat = async (req: Request, res, next) => {
       });
     }
     if (!chat) {
-      chat = await Chat.create(chatData);
+      chat = new Chat(chatData);
+      await chat.save();
+      console.log("chattt", await Chat.find());
     }
     res.status(200).json({
       status: "ok",
@@ -50,6 +54,7 @@ export const getChat = async (req: Request, res, next) => {
     },
   ]);
   if (!chat) next(new NotFoundError("Chat is not found"));
+  await Chat.deleteMany();
   res.status(200).json({
     status: "ok",
     data: chat,

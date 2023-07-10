@@ -8,6 +8,7 @@ export const createMessage = async (req: Request, res, next) => {
   try {
     const { content } = req.body;
     const { id: chat } = req.params;
+
     if (!(content && chat)) {
       throw new NotFoundError("data not completed");
     }
@@ -50,7 +51,7 @@ export const getMessagesByChat = async (req: Request, res, next) => {
     const messages = await Message.find({
       chat: req.params.id,
     }).populate("sender");
-    console.log(messages);
+    await Message.deleteMany();
 
     await Message.updateMany(
       {
