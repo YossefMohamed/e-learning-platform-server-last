@@ -27,16 +27,13 @@ io.on("connection", (socket: any) => {
   socket.on("message received", (room: any) =>
     socket.in(room).emit("message received")
   );
-  socket.on("new message", (message: any) =>
-    socket.in(message.chat._id).emit("new message", message)
-  );
+  socket.on("new message", (message: any) => {
+
+    socket.in(message.chat._id).emit("new message", message);
+  });
 
   socket.on("login", (userId: ObjectId) => {
     onlineUser.push(userId);
-    console.log("onlineUser");
-    console.log(onlineUser);
-    console.log(userId);
-    console.log("onlineUser");
 
     socket.emit("online", onlineUser);
   });
@@ -44,7 +41,6 @@ io.on("connection", (socket: any) => {
     onlineUser = onlineUser.filter((user) => {
       return user !== userId;
     });
-    console.log(onlineUser);
 
     socket.emit("online", onlineUser);
   });

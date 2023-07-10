@@ -40,7 +40,15 @@ export const getChat = async (req: Request, res, next) => {
   const chat = await Chat.findOne({
     _id: req.params.id,
     users: { $in: [req.user?._id] },
-  }).populate("users");
+  }).populate([
+    {
+      path: "users",
+    },
+    {
+      path: "latestMessage",
+      select: "content readBy",
+    },
+  ]);
   if (!chat) next(new NotFoundError("Chat is not found"));
   res.status(200).json({
     status: "ok",
@@ -49,7 +57,6 @@ export const getChat = async (req: Request, res, next) => {
 };
 
 export const getChats = async (req: Request, res, next) => {
-  console.log(req.user);
   const chats = await Chat.find({
     users: { $elemMatch: { $eq: req.user._id } },
   })

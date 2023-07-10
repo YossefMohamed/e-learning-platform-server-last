@@ -3,6 +3,6 @@ import { getMessagesByChat } from "../../controllers/messageControllers";
 
 const router = Router();
 
-router.post("/", getMessagesByChat);
+router.get("/:id", getMessagesByChat);
 
 export { router as getMessagesByChatRouter };

@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { addChat, getChat, getChats } from "../../controllers/chatControllers";
 import { createMessageRouter } from "./createMessage";
-import { getMessagesByChat } from "../../controllers/messageControllers";
+import { getMessagesByChatRouter } from "./getMessagesByChat";
+import { protect } from "../../middlewares/auth";
 
 const messageRouter = Router();
 
+messageRouter.use(protect);
 messageRouter.use(createMessageRouter);
-messageRouter.use(getMessagesByChat);
+messageRouter.use(getMessagesByChatRouter);
 
 export { messageRouter };

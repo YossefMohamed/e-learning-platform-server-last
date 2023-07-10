@@ -6,8 +6,8 @@ import { NotFoundError } from "../errors/not-found-error";
 
 export const createMessage = async (req: Request, res, next) => {
   try {
-    const { content, chat } = req.body;
-
+    const { content } = req.body;
+    const { id: chat } = req.params;
     if (!(content && chat)) {
       throw new NotFoundError("data not completed");
     }
@@ -46,9 +46,12 @@ export const getMessagesByChat = async (req: Request, res, next) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id))
       throw new NotFoundError("Chat is not found");
+
     const messages = await Message.find({
       chat: req.params.id,
     }).populate("sender");
+    console.log(messages);
+
     await Message.updateMany(
       {
         chat: req.params.id,
