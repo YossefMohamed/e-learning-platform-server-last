@@ -13,20 +13,27 @@ export const addChat = async (req: Request, res, next) => {
       users: users,
     };
 
-    console.log("data ", chatData);
-
-    let chat: IChat | null = null;
+    let chat: any = null;
     if (users.length === 2) {
       chat = await Chat.findOne({
-        users: users,
+        users: { $in: users },
+      }).populate([
+        {
+          path: "users",
+        },
+        {
+          path: "latestMessage",
+          select: "content readBy",
+        },
+      ]);
+    }
+    if (chat)
+      return res.status(200).json({
+        status: "ok",
+        data: chat,
       });
-    }
-    if (!chat) {
-      chat = new Chat(chatData);
-      await chat.save();
-      console.log("chattt", await Chat.find());
-    }
-    res.status(200).json({
+    chat = await Chat.create(chatData);
+    return res.status(200).json({
       status: "ok",
       data: chat,
     });
@@ -43,7 +50,7 @@ export const getChat = async (req: Request, res, next) => {
     });
   const chat = await Chat.findOne({
     _id: req.params.id,
-    users: { $in: [req.user?._id] },
+    users: { $eq: req.user._id },
   }).populate([
     {
       path: "users",
@@ -53,8 +60,8 @@ export const getChat = async (req: Request, res, next) => {
       select: "content readBy",
     },
   ]);
-  if (!chat) next(new NotFoundError("Chat is not found"));
-  await Chat.deleteMany();
+
+  if (!chat) return next(new NotFoundError("Chat is not found"));
   res.status(200).json({
     status: "ok",
     data: chat,
@@ -64,6 +71,7 @@ export const getChat = async (req: Request, res, next) => {
 export const getChats = async (req: Request, res, next) => {
   const chats = await Chat.find({
     users: { $elemMatch: { $eq: req.user._id } },
+    latestMessage: { $ne: null },
   })
     .populate([
       {

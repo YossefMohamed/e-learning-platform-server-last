@@ -7,6 +7,7 @@ import Year from "../models/yearModel";
 import Course from "../models/courseModel";
 import { ObjectId } from "mongodb";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
+import Chat from "../models/chatSchema";
 export const signup = async (
   req: Request,
   res: Response,
@@ -26,6 +27,23 @@ export const signup = async (
       course: course || null,
     });
     const token = signIn(user._id, phoneNumber);
+    if (!isAdmin) {
+      const admins = await User.find({
+        isAdmin: true,
+      });
+
+      admins.map(async ({ _id }: { _id: string }) => {
+        const users = [_id];
+
+        users.push(user._id);
+
+        const chatData = {
+          users: users,
+        };
+
+        await Chat.create(chatData);
+      });
+    }
 
     res.status(201).json({
       status: "ok",
@@ -98,6 +116,7 @@ export const signin = async (
     const { phoneNumber, password } = req.body;
     const user: any = await User.findOne({ phoneNumber });
     req.user = user;
+
     if (user && (await user.matchPassword(password))) {
       if (user.status === "suspanded")
         return next(

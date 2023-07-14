@@ -3,6 +3,9 @@ import { NotFoundError } from "../errors/not-found-error";
 import Lesson from "../models/lessonModel";
 import fs from "fs";
 import { Quiz } from "../models/QuizModel";
+import User from "../models/userModel";
+import Chat from "../models/chatSchema";
+import Message from "../models/messageSchema";
 
 interface MulterRequest extends Request {
   files: any;
@@ -36,6 +39,7 @@ export const createLesson = async (
   try {
     const { unit, course } = req.params;
     const { name, description, extra } = req.body;
+
     if (!req.files.video || !req.files.file || !req.files.assignment)
       throw new Error("Please upload a least one resource");
 
@@ -51,10 +55,42 @@ export const createLesson = async (
       unit,
       course,
     });
-    const quiz = await Quiz.create({
+    await Quiz.create({
       lesson: lesson._id,
     });
-    console.log(quiz);
+    await lesson.populate("course");
+    const students = await User.find({
+      course: course,
+    });
+
+    students.map(async ({ _id }: { _id: string }) => {
+      const users = [_id];
+
+      users.push(req.user._id);
+
+      let chat = await Chat.findOne({
+        users: { $in: users },
+      }).populate([
+        {
+          path: "users",
+        },
+        {
+          path: "latestMessage",
+          select: "content readBy",
+        },
+      ]);
+
+      const message = await Message.create({
+        sender: req.user?._id,
+        content: "New lesson has been added to " + lesson.course.name,
+        chat,
+        readBy: [req.user?._id],
+      });
+      await Chat.findByIdAndUpdate(chat, {
+        latestMessage: message,
+      });
+    });
+
     res.status(200).json({
       status: "ok",
       data: lesson,

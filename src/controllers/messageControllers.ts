@@ -51,7 +51,6 @@ export const getMessagesByChat = async (req: Request, res, next) => {
     const messages = await Message.find({
       chat: req.params.id,
     }).populate("sender");
-    await Message.deleteMany();
 
     await Message.updateMany(
       {
