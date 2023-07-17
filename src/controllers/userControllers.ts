@@ -176,10 +176,18 @@ export const getAllUsers = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.user.isAdmin) throw new NotAuthorizedError();
     const { name, year } = req.query;
     let users: any;
-    console.log(year);
+    if (!req.user.isAdmin) {
+      users = await User.find({
+        name: { $regex: name, $options: "i" },
+        isAdmin: true,
+      }).populate("course year");
+      return res.status(200).json({
+        status: "ok",
+        data: users,
+      });
+    }
     if (year && year !== "All years") {
       users = await User.find({
         name: { $regex: name, $options: "i" },
