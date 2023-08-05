@@ -12,7 +12,7 @@ import { NotFoundError } from "./errors/not-found-error";
 const app = express();
 const corsOptions = { credentials: true, origin: "*" };
 app.use(express.static(path.join(__dirname, "../public")));
-
+app.disable("etag");
 app.use(cors(corsOptions));
 const router = Router();
 app.use(morgan("dev"));

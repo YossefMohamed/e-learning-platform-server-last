@@ -16,7 +16,7 @@ export const addChat = async (req: Request, res, next) => {
     let chat: any = null;
     if (users.length === 2) {
       chat = await Chat.findOne({
-        users: { $in: users },
+        users: { $all: users, $size: users.length },
       }).populate([
         {
           path: "users",
@@ -48,10 +48,9 @@ export const getChat = async (req: Request, res, next) => {
       status: "failed",
       message: "Not Found",
     });
-  const chat = await Chat.findOne({
-    _id: req.params.id,
-    users: { $eq: req.user._id },
-  }).populate([
+  console.log(req.params.id);
+
+  const chat = await Chat.findById(req.params.id).populate([
     {
       path: "users",
     },

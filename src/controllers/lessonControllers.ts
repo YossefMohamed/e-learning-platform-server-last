@@ -67,7 +67,7 @@ export const createLesson = async (
       const users = [_id];
 
       users.push(req.user._id);
-
+      if (_id === req.user._id) return;
       let chat = await Chat.findOne({
         users: { $in: users },
       }).populate([

@@ -180,6 +180,7 @@ export const getAllUsers = async (
     let users: any;
     if (!req.user.isAdmin) {
       users = await User.find({
+        _id: { $ne: req.user._id }, // exclude current user
         name: { $regex: name, $options: "i" },
         isAdmin: true,
       }).populate("course year");
@@ -190,11 +191,13 @@ export const getAllUsers = async (
     }
     if (year && year !== "All years") {
       users = await User.find({
+        _id: { $ne: req.user._id }, // exclude current user
         name: { $regex: name, $options: "i" },
         year: new ObjectId(`${year}`),
       }).populate("course year");
     } else {
       users = await User.find({
+        _id: { $ne: req.user._id }, // exclude current user
         $or: [{ name: { $regex: name, $options: "i" } }],
       }).populate("course year");
     }
@@ -207,7 +210,6 @@ export const getAllUsers = async (
     next(error);
   }
 };
-
 export const assignYear = async (
   req: Request,
   res: Response,
