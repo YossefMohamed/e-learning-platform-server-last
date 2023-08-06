@@ -29,7 +29,7 @@ io.on("connection", (socket: any) => {
   );
   socket.on("new message", (message: any) => {
     // console.log(message.chat);
-    socket.in(message.chat._id).emit("new message", message);
+    socket.emit("new message", message);
   });
 
   socket.on("login", (userId: ObjectId) => {
