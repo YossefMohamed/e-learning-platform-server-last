@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Course from "../models/courseModel";
 import { NotFoundError } from "../errors/not-found-error";
 import Unit from "../models/unitModel";
+import Lesson from "../models/lessonModel";
 
 export const createUnit = async (
   req: Request,
@@ -34,10 +35,9 @@ export const editUnit = async (
   try {
     if (!req.user.isAdmin) throw new Error();
     const { id } = req.params;
-    const { name, course } = req.body;
+    const { name } = req.body;
     const unit = await Unit.findById(id);
     unit.name = name || unit.name;
-    unit.course = course || unit.course;
     await unit.save();
     return res.status(200).json({
       status: "ok",
@@ -55,7 +55,8 @@ export const getUnits = async (
 ) => {
   try {
     const units = await Unit.find().populate("course");
-
+    await Unit.deleteMany();
+    await Lesson.deleteMany();
     return res.status(200).json({
       status: "ok",
       data: units,
@@ -94,6 +95,9 @@ export const deleteUnit = async (
     if (!req.user.isAdmin) throw new Error();
     const { id } = req.params;
     await Unit.findByIdAndDelete(id);
+    await Lesson.deleteMany({
+      unit: id,
+    });
     return res.status(200).json({
       status: "ok",
     });

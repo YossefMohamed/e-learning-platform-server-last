@@ -14,6 +14,8 @@ export const addChat = async (req: Request, res, next) => {
     };
 
     let chat: any = null;
+    if (`${users[0]}` == req.user._id)
+      throw new NotFoundError("Chat is not found");
     if (users.length === 2) {
       chat = await Chat.findOne({
         users: { $all: users, $size: users.length },
