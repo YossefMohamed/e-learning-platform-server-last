@@ -83,13 +83,14 @@ export const editUser = async (
     const { id } = req.params;
     if (!req.user.isAdmin || (!req.user.isAdmin && req.user._id === id))
       return next(new NotAuthorizedError());
-    const name = req.body.name ? req.body.name : req.user.name;
-    const status = req.body.status ? req.body.status : req.user.status;
+    const user = await User.findById(id).populate("course year");
+
+    const name = req.body.name ? req.body.name : user.name;
+    const status = req.body.status ? req.body.status : user.status;
     const password = req.body.password;
     const year = req.body.year;
     const course = req.body.course;
     const isAdmin = req.body.isAdmin;
-    const user = await User.findById(id).populate("course year");
     if (password) user.password = password;
     user.status = status || user.status;
     user.name = name || user.name;

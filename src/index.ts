@@ -13,6 +13,8 @@ console.log(process.env.dbURI);
 let io = require("socket.io")(server, {
   cors: {
     origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 let onlineUser: ObjectId[] = [];
