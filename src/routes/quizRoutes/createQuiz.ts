@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createQuiz } from "../../controllers/QuizControllers";
+import { createQuiz } from "../../controllers/quizControllers";
 import { validateRequest } from "../../middlewares/validate-request";
 import { createQuizValidators } from "../../services/quizValidators/createQuizValidators";
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getQuestionById } from "../../controllers/QuizControllers";
+import { getQuestionById } from "../../controllers/quizControllers";
 
 const router = Router();
 

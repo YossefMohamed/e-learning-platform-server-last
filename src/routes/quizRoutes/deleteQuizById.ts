@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteQuizById } from "../../controllers/QuizControllers";
+import { deleteQuizById } from "../../controllers/quizControllers";
 
 const router = Router();
 
