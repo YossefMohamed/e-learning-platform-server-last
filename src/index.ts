@@ -6,6 +6,17 @@ import swaggerDocs from "./services/swagger";
 import http from "http";
 
 const server = http.createServer(app);
+import fs from "fs";
+
+const createDirectories = (directories) => {
+  for (const directory of directories) {
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+    }
+  }
+};
+
+const directories = ["./public/videos", "./public/files", "./public/images"];
 
 const port = process.env.PORT! || 3000;
 console.log(process.env.dbURI);
@@ -51,6 +62,6 @@ io.on("connection", (socket: any) => {
 server.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
   connectDB();
-
+  createDirectories(directories);
   swaggerDocs(app, Number(port));
 });
