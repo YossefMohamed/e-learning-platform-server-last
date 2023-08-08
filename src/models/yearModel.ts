@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IYear extends Document {
   name: string;
+  image: string;
 }
 
 /**
@@ -59,6 +60,10 @@ const yearSchema: Schema<IYear> = new mongoose.Schema<IYear>(
     name: {
       type: String,
       required: true,
+    },
+    image: {
+      type: String,
+      default: "courseDefault.jpg",
     },
   },
   {

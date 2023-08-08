@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IQuestion, IQuiz, Question, Quiz } from "../models/QuizModel";
+import { IQuestion, IQuiz, Question, Quiz } from "../models/quizModel";
 import { NotFoundError } from "../errors/not-found-error";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
 import Score from "../models/scoreModal";

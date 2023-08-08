@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { NotFoundError } from "../errors/not-found-error";
 import Lesson from "../models/lessonModel";
 import fs from "fs";
-import { Quiz } from "../models/QuizModel";
+import { Quiz } from "../models/quizModel";
 import User from "../models/userModel";
 import Chat from "../models/chatSchema";
 import Message from "../models/messageSchema";

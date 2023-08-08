@@ -5,8 +5,12 @@ import Year from "../models/yearModel";
 import { NextFunction, Request, Response } from "express";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
 
+interface MulterRequest extends Request {
+  files: any;
+}
+
 export const createYear = async (
-  req: Request,
+  req: MulterRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -17,6 +21,7 @@ export const createYear = async (
 
     const year = await Year.create({
       name: name,
+      image: req.files.image && req.files.image[0].filename,
     });
 
     return res.status(200).json({

@@ -3,8 +3,12 @@ import Course from "../models/courseModel";
 import Year from "../models/yearModel";
 import { NotFoundError } from "../errors/not-found-error";
 
+interface MulterRequest extends Request {
+  files: any;
+}
+
 export const createCourse = async (
-  req: Request,
+  req: MulterRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -12,10 +16,12 @@ export const createCourse = async (
     // if (!req.user.isAdmin) throw new Error();
 
     const { name, year } = req.body;
-
+    if (!name) throw new Error("Please enter a valid name");
+    if (!year) throw new Error("Please enter a valid year");
     let course = await Course.create({
       name,
       year,
+      image: req.files.image && req.files.image[0].filename,
     });
     return res.status(200).json({
       status: "ok",

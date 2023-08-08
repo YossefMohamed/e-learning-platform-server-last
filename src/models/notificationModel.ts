@@ -1,6 +1,6 @@
 import mongoose, { ObjectId, PopulatedDoc } from "mongoose";
 import { IUser } from "./userModel";
-import { IQuiz } from "./QuizModel";
+import { IQuiz } from "./quizModel";
 import { ILesson } from "./lessonModel";
 
 const Schema = mongoose.Schema;

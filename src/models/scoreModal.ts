@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, PopulatedDoc } from "mongoose";
-import { IQuiz } from "./QuizModel";
+import { IQuiz } from "./quizModel";
 import { IUser } from "./userModel";
 
 export interface IScore extends Document {

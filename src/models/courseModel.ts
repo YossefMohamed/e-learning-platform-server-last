@@ -4,6 +4,7 @@ import { IYear } from "./yearModel";
 export interface ICourse extends Document {
   name: string;
   year: PopulatedDoc<IYear>;
+  image: string;
 }
 
 /**
@@ -67,6 +68,10 @@ const courseSchema: Schema<ICourse> = new mongoose.Schema<ICourse>(
       type: mongoose.Types.ObjectId,
       ref: "Year",
       required: true,
+    },
+    image: {
+      type: String,
+      default: "courseDefault.jpg",
     },
   },
   {
