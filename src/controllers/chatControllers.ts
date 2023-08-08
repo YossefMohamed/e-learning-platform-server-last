@@ -1,5 +1,5 @@
 import { Request } from "express";
-import Chat, { IChat } from "../models/chatSchema";
+import Chat, { IChat } from "../models/chatModel";
 import { NotFoundError } from "../errors/not-found-error";
 import mongoose from "mongoose";
 

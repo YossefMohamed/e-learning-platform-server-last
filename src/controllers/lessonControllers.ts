@@ -4,8 +4,8 @@ import Lesson from "../models/lessonModel";
 import fs from "fs";
 import { Quiz } from "../models/quizModel";
 import User from "../models/userModel";
-import Chat from "../models/chatSchema";
-import Message from "../models/messageSchema";
+import Chat from "../models/chatModel";
+import Message from "../models/messageModel";
 
 interface MulterRequest extends Request {
   files: any;

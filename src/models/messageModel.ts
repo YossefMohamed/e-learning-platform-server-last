@@ -1,5 +1,5 @@
 import mongoose, { PopulatedDoc } from "mongoose";
-import { IChat } from "./chatSchema";
+import { IChat } from "./chatModel";
 import { IUser } from "./userModel";
 
 const Schema = mongoose.Schema;

@@ -1,6 +1,6 @@
 import mongoose, { PopulatedDoc, Schema } from "mongoose";
 import { IUser } from "./userModel";
-import { IMessage } from "./messageSchema";
+import { IMessage } from "./messageModel";
 
 export interface IChat extends mongoose.Document {
   chatName: string;

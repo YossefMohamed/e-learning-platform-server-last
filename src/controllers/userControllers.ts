@@ -7,7 +7,7 @@ import Year from "../models/yearModel";
 import Course from "../models/courseModel";
 import { ObjectId } from "mongodb";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
-import Chat from "../models/chatSchema";
+import Chat from "../models/chatModel";
 export const signup = async (
   req: Request,
   res: Response,
