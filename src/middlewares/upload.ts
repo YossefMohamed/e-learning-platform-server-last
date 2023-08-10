@@ -18,8 +18,8 @@ const uploadStorage = multer.diskStorage({
   filename: function (req, file, cb) {
     const acceptedTypes = file.mimetype.split("/");
     const fileName = uuidv4() + "." + acceptedTypes[1];
-
-    cb(null, fileName);
+    console.log(req.body.name);
+    cb(null, req.body.name ? req.body.name : fileName);
   },
 });
 

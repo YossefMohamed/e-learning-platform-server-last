@@ -91,7 +91,9 @@ export const editUser = async (
     const year = req.body.year;
     const course = req.body.course;
     const isAdmin = req.body.isAdmin;
-    if (password) user.password = password;
+    if (password) {
+      user.password = password;
+    }
     user.status = status || user.status;
     user.name = name || user.name;
     user.year = year || user.year;

@@ -63,5 +63,5 @@ server.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
   connectDB();
   createDirectories(directories);
-  swaggerDocs(app, Number(port));
+  // swaggerDocs(app, Number(port));
 });

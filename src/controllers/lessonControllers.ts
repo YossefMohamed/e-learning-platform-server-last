@@ -194,3 +194,32 @@ export const getLessonsWithUnitsByCourse = async (
     next(error);
   }
 };
+
+export const editLesson = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { lessonId } = req.params;
+    const { name, description, extra } = req.body;
+
+    const lesson = await Lesson.findById(lessonId);
+    if (!lesson) throw new Error("Lesson not found");
+
+    // Update the lesson properties
+    lesson.name = name;
+    lesson.description = description;
+    lesson.extra = extra;
+
+    // Save the updated lesson
+    await lesson.save();
+
+    res.status(200).json({
+      status: "ok",
+      data: lesson,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

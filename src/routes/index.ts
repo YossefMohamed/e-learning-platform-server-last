@@ -9,6 +9,7 @@ import { QuizRouter } from "./quizRoutes";
 import { submitRouter } from "./submitRoutes";
 import { chatRouter } from "./chatRoutes";
 import { messageRouter } from "./messageRoutes";
+import { contentRouter } from "./contentRoutes.ts";
 
 const indexRouter = Router();
 
@@ -21,5 +22,6 @@ indexRouter.use("/lessons", lessonRouter);
 indexRouter.use("/quizzes", QuizRouter);
 indexRouter.use("/chats", chatRouter);
 indexRouter.use("/messages", messageRouter);
+indexRouter.use("/content", contentRouter);
 
 export { indexRouter };
