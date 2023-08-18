@@ -62,13 +62,16 @@ export const getCourses = async (
   next: NextFunction
 ) => {
   try {
-    const courses = await Course.find().populate("year students lessons");
+    const years = await Year.find().populate({
+      path: "courses",
+      populate: "students lessons",
+    });
     return res.status(200).json({
       status: "ok",
-      data: courses,
+      data: years,
     });
   } catch (error) {
-    next(error);
+    next(new NotFoundError("Server is not found"));
   }
 };
 
