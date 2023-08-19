@@ -8,9 +8,9 @@ import { deleteCourseRouter } from "./deleteCourse";
 import { getCurrentUserCoursesRouter } from "./getCurrentUserCourse";
 
 const courseRouter = Router();
-courseRouter.use(getCoursesRouter);
 
 courseRouter.use(protect);
+courseRouter.use(getCoursesRouter);
 courseRouter.use(getCurrentUserCoursesRouter);
 courseRouter.use(getCoursesByYearRouter);
 
