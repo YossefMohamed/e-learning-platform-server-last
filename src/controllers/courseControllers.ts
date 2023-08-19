@@ -68,7 +68,7 @@ export const getCourses = async (
         : {
             _id: req.user.year,
           }
-    ).populate("year");
+    ).populate("year students lessons");
     return res.status(200).json({
       status: "ok",
       data: courses,
