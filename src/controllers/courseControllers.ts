@@ -62,7 +62,13 @@ export const getCourses = async (
   next: NextFunction
 ) => {
   try {
-    const years = await Year.find().populate({
+    const years = await Year.find(
+      req.user.isAdmin
+        ? {}
+        : {
+            _id: req.user.year,
+          }
+    ).populate({
       path: "courses",
       populate: "students lessons",
     });
