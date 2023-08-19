@@ -62,19 +62,16 @@ export const getCourses = async (
   next: NextFunction
 ) => {
   try {
-    const years = await Year.find(
+    const courses = await Course.find(
       req.user.isAdmin
         ? {}
         : {
             _id: req.user.year,
           }
-    ).populate({
-      path: "courses",
-      populate: "students lessons",
-    });
+    ).populate("year");
     return res.status(200).json({
       status: "ok",
-      data: years,
+      data: courses,
     });
   } catch (error) {
     next(new NotFoundError("Server is not found"));
