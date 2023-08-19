@@ -74,7 +74,7 @@ export const getCourses = async (
       data: courses,
     });
   } catch (error) {
-    next(new NotFoundError("Server is not found"));
+    next(error);
   }
 };
 
